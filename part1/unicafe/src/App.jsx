@@ -6,12 +6,7 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const StatisticLine = (props) => {
-  return <div>{props.text} {props.value}</div>
-}
-
 const Statistics = (props) => {
-
   if (props.good === 0 && props.neutral === 0 && props.bad === 0) {
     return <p>No feedback given</p>
   }   
@@ -76,8 +71,7 @@ const App = () => {
       <Button handleClick={onNeutralClick} text="neutral"/>
       <Button handleClick={onBadClick} text="bad"/>
       <h1>statistics</h1>
-      <Statistics good={good} neutral={neutral} bad={bad} />
-      
+      <Statistics good={good} neutral={neutral} bad={bad} />      
     </div>
   )
 }

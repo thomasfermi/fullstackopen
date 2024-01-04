@@ -7,12 +7,18 @@ const Button = ({ handleClick, text }) => (
 )
 
 const Statistics = (props) => {
-  
+
+  if (props.good === 0 && props.neutral === 0 && props.bad === 0) {
+    return <p>No feedback given</p>
+  }   
   const all = props.good + props.neutral + props.bad
-  const average = all/3.
+  const average = (props.good - props.bad)/all
   const positive_percent = (100.0*props.good)/all
   return (
     <p>
+      good {props.good}<br/>
+      neutral {props.neutral}<br/>
+      bad {props.bad}<br/>
       all {all}<br/>
       average {average}<br/>
       positive {positive_percent} %
@@ -46,11 +52,6 @@ const App = () => {
       <Button handleClick={onNeutralClick} text="neutral"/>
       <Button handleClick={onBadClick} text="bad"/>
       <h1>statistics</h1>
-      <p>
-        good {good}<br/>
-        neutral {neutral}<br/>
-        bad {bad}
-      </p>
       <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )

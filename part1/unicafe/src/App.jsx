@@ -18,15 +18,35 @@ const Statistics = (props) => {
   const all = props.good + props.neutral + props.bad
   const average = (props.good - props.bad)/all
   const positive_percent = ((100.0*props.good)/all).toString()+"%"
-  return (
+  return (    
     <div>
-      <StatisticLine text="good" value ={props.good} />
-      <StatisticLine text="neutral" value ={props.neutral} />
-      <StatisticLine text="bad" value ={props.bad} />
-      <StatisticLine text="all" value ={all} />
-      <StatisticLine text="average" value ={average} />
-      <StatisticLine text="positive" value ={positive_percent} />
+      <Table rows={
+        [{text:"good", value: props.good},
+         {text:"neutral", value: props.neutral},
+         {text:"bad", value: props.bad},
+         {text:"all", value: all},
+         {text:"average", value: average},
+         {text:"positive", value: positive_percent},]
+       }/>
     </div>
+  )
+}
+
+const Table = (props) => { 
+  const entries = props.rows.map((row,index) => 
+    (
+      <tr key={index}>
+        <td>{row.text}</td>
+        <td>{row.value}</td>
+      </tr>
+    )
+  )
+  return (
+    <table>
+      <tbody>
+        {entries}
+      </tbody>
+    </table>
   )
 }
 
@@ -57,6 +77,7 @@ const App = () => {
       <Button handleClick={onBadClick} text="bad"/>
       <h1>statistics</h1>
       <Statistics good={good} neutral={neutral} bad={bad} />
+      
     </div>
   )
 }

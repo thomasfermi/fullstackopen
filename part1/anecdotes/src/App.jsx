@@ -21,15 +21,25 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Uint32Array(anecdotes.length))
 
   const randomizeSelection = () => {
       setSelected(randomNumber(anecdotes.length))
   }
 
+  const addVote = () => {
+    let copied_votes = [...votes]
+    copied_votes[selected]+=1
+    setVotes(copied_votes)
+  }
+
+
   return (
     <div>
-      <p>{anecdotes[selected]}</p>      
+      <p>{anecdotes[selected]}</p> 
+      <p>{"has " + String(votes[selected]) + " votes"}</p>     
       <Button handleClick={randomizeSelection} text={"next anecdote"} />
+      <Button handleClick={addVote} text={"vote"} />
     </div>
   )
 }

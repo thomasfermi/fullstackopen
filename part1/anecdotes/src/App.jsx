@@ -8,6 +8,15 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+const Anectode = ({anectode, num_votes}) => {
+  return (
+      <div>
+        <p>{anectode}</p> 
+        <p>{"has " + String(num_votes) + " votes"}</p>
+      </div>
+  )
+}
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -33,13 +42,16 @@ const App = () => {
     setVotes(copied_votes)
   }
 
+  var indexOfMaxVotes = votes.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0);
 
   return (
     <div>
-      <p>{anecdotes[selected]}</p> 
-      <p>{"has " + String(votes[selected]) + " votes"}</p>     
+      <h1>Anectode of the day</h1>
+      <Anectode anectode={anecdotes[selected]} num_votes={votes[selected]} />
       <Button handleClick={randomizeSelection} text={"next anecdote"} />
       <Button handleClick={addVote} text={"vote"} />
+      <h1>Anectode with most votes</h1>
+      <Anectode anectode={anecdotes[indexOfMaxVotes]} num_votes={votes[indexOfMaxVotes]} />
     </div>
   )
 }

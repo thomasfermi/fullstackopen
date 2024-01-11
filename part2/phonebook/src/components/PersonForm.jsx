@@ -11,7 +11,11 @@ const PersonForm = ({ persons, setPersons }) => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const newPerson = { name: newName, number: newNumber, id: persons.length };
+    const newPerson = {
+      name: newName,
+      number: newNumber,
+      id: persons.length + 1,
+    };
     if (newName === "") {
       alert("You did not enter a name.");
     }

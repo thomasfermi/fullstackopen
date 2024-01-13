@@ -1,4 +1,5 @@
 import { useState } from "react";
+import personService from "../services/persons";
 
 function isPhoneNumber(input) {
   const phoneRegex = /^[0-9]+(-[0-9]+)*$/;
@@ -11,11 +12,6 @@ const PersonForm = ({ persons, setPersons }) => {
 
   const addPerson = (event) => {
     event.preventDefault();
-    const newPerson = {
-      name: newName,
-      number: newNumber,
-      id: persons.length + 1,
-    };
     if (newName === "") {
       alert("You did not enter a name.");
     }
@@ -24,8 +20,14 @@ const PersonForm = ({ persons, setPersons }) => {
     } else if (!isPhoneNumber(newNumber)) {
       alert(`${newNumber} is not a valid phone number.`);
     } else {
-      setPersons(persons.concat(newPerson));
-      setNewName("");
+      const newPerson = {
+        name: newName,
+        number: newNumber,
+      };
+      personService.create(newPerson).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName("");
+      });
     }
   };
 

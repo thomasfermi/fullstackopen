@@ -9,6 +9,29 @@ function isPhoneNumber(input) {
 const PersonForm = ({ persons, setPersons }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("0");
+  const newPerson = {
+    name: newName,
+    number: newNumber,
+  };
+
+  // if person with newName already exists, we might want to update it
+  const maybeUpdatePerson = () => {
+    const oldPerson = persons.find((person) => person.name === newName);
+    if (
+      window.confirm(
+        `${oldPerson.name} is already added to phonebook, replace the old number with a new one?`
+      )
+    ) {
+      personService.update(oldPerson.id, newPerson).then((returnedPerson) => {
+        setPersons(
+          persons.map((person) =>
+            person.name === newName ? returnedPerson : person
+          )
+        );
+        setNewName("");
+      });
+    }
+  };
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -16,14 +39,10 @@ const PersonForm = ({ persons, setPersons }) => {
       alert("You did not enter a name.");
     }
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook.`);
+      maybeUpdatePerson();
     } else if (!isPhoneNumber(newNumber)) {
       alert(`${newNumber} is not a valid phone number.`);
     } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber,
-      };
       personService.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");

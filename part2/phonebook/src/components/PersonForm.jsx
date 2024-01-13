@@ -6,12 +6,18 @@ function isPhoneNumber(input) {
   return phoneRegex.test(input);
 }
 
-const PersonForm = ({ persons, setPersons }) => {
+const PersonForm = ({ persons, setPersons, setNotification }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("0");
   const newPerson = {
     name: newName,
     number: newNumber,
+  };
+  const notificationUpdate = (notification) => {
+    setNotification(notification);
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
   };
 
   // if person with newName already exists, we might want to update it
@@ -29,6 +35,7 @@ const PersonForm = ({ persons, setPersons }) => {
           )
         );
         setNewName("");
+        notificationUpdate(`Update number for ${oldPerson.name}`);
       });
     }
   };
@@ -46,6 +53,7 @@ const PersonForm = ({ persons, setPersons }) => {
       personService.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
+        notificationUpdate(`Added ${returnedPerson.name}`);
       });
     }
   };

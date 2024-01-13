@@ -21,7 +21,11 @@ const App = () => {
       <h3>Add a new number</h3>
       <PersonForm persons={persons} setPersons={setPersons} />
       <h3>Numbers</h3>
-      <Persons persons={persons} searchName={searchName} />
+      <Persons
+        persons={persons}
+        setPersons={setPersons}
+        searchName={searchName}
+      />
     </div>
   );
 };

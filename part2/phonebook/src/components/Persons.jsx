@@ -1,3 +1,5 @@
+import personService from "../services/persons";
+
 const Person = ({ person }) => {
   return (
     <div>
@@ -6,13 +8,32 @@ const Person = ({ person }) => {
   );
 };
 
-const Persons = ({ persons, searchName }) => {
+const Persons = ({ persons, setPersons, searchName }) => {
   const nameFitsSearchName = (name) => {
     return name.toLowerCase().includes(searchName);
   };
+  const get_person_delete_func = (person) => {
+    return () => {
+      if (
+        window.confirm(
+          `Do you really want to delete the entry for ${person.name}?`
+        )
+      ) {
+        personService.remove(person.id);
+        setPersons(persons.filter((p) => p.id !== person.id));
+      }
+    };
+  };
   const rendered_persons = persons
     .filter((p) => nameFitsSearchName(p.name))
-    .map((p) => <Person key={p.id} person={p} />);
+    .map((p) => {
+      return (
+        <div key={p.id}>
+          <Person person={p} />
+          <button onClick={get_person_delete_func(p)}>delete</button>
+        </div>
+      );
+    });
 
   return <div>{rendered_persons}</div>;
 };

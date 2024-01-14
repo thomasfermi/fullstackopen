@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import countryService from "./services/countries";
 import CountryForm from "./components/CountryForm";
 import Country from "./components/Country";
+import CountryList from "./components/CountryList";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -29,7 +30,7 @@ const App = () => {
     if (names.length > 10) {
       return <p>Too many matches, specify another filter</p>;
     } else if (names.length > 1) {
-      return names.map((n) => <div key={n}>{n}</div>);
+      return <CountryList names={names} countries={countries} />;
     } else if (names.length === 1) {
       return (
         <Country country={countries.find((n) => n.name.common === names[0])} />

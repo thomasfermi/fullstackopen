@@ -8,7 +8,7 @@ const Person = ({ person }) => {
   );
 };
 
-const Persons = ({ persons, setPersons, searchName }) => {
+const Persons = ({ persons, setPersons, searchName, showError }) => {
   const nameFitsSearchName = (name) => {
     return name.toLowerCase().includes(searchName);
   };
@@ -19,7 +19,11 @@ const Persons = ({ persons, setPersons, searchName }) => {
           `Do you really want to delete the entry for ${person.name}?`
         )
       ) {
-        personService.remove(person.id);
+        personService.remove(person.id).catch((_error) => {
+          showError(
+            `Information of ${person.name} has already been removed from server.`
+          );
+        });
         setPersons(persons.filter((p) => p.id !== person.id));
       }
     };

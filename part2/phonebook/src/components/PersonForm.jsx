@@ -6,18 +6,12 @@ function isPhoneNumber(input) {
   return phoneRegex.test(input);
 }
 
-const PersonForm = ({ persons, setPersons, setNotification }) => {
+const PersonForm = ({ persons, setPersons, showNotification, showError }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("0");
   const newPerson = {
     name: newName,
     number: newNumber,
-  };
-  const notificationUpdate = (notification) => {
-    setNotification(notification);
-    setTimeout(() => {
-      setNotification(null);
-    }, 3000);
   };
 
   // if person with newName already exists, we might want to update it
@@ -28,15 +22,23 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
         `${oldPerson.name} is already added to phonebook, replace the old number with a new one?`
       )
     ) {
-      personService.update(oldPerson.id, newPerson).then((returnedPerson) => {
-        setPersons(
-          persons.map((person) =>
-            person.name === newName ? returnedPerson : person
-          )
-        );
-        setNewName("");
-        notificationUpdate(`Update number for ${oldPerson.name}`);
-      });
+      personService
+        .update(oldPerson.id, newPerson)
+        .then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.name === newName ? returnedPerson : person
+            )
+          );
+          setNewName("");
+          showNotification(`Update number for ${oldPerson.name}`);
+        })
+        .catch((_error) => {
+          showError(
+            `Information of ${oldPerson.name} has already been removed from server.`
+          );
+          return;
+        });
     }
   };
 
@@ -53,7 +55,7 @@ const PersonForm = ({ persons, setPersons, setNotification }) => {
       personService.create(newPerson).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
         setNewName("");
-        notificationUpdate(`Added ${returnedPerson.name}`);
+        showNotification(`Added ${returnedPerson.name}`);
       });
     }
   };

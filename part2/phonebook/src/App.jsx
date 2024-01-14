@@ -9,6 +9,20 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [notification, setNotification] = useState(null);
+  const [errorNotification, setErrorNotification] = useState(null);
+
+  const showError = (errorMsg) => {
+    setErrorNotification(errorMsg);
+    setTimeout(() => {
+      setErrorNotification(null);
+    }, 3000);
+  };
+  const showNotification = (notification) => {
+    setNotification(notification);
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
+  };
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -19,19 +33,22 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification notification={notification} />
+      <Notification notification={notification} type={"success"} />
+      <Notification notification={errorNotification} type={"failure"} />
       <Filter searchName={searchName} setSearchName={setSearchName} />
       <h3>Add a new number</h3>
       <PersonForm
         persons={persons}
         setPersons={setPersons}
-        setNotification={setNotification}
+        showNotification={showNotification}
+        showError={showError}
       />
       <h3>Numbers</h3>
       <Persons
         persons={persons}
         setPersons={setPersons}
         searchName={searchName}
+        showError={showError}
       />
     </div>
   );

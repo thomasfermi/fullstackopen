@@ -18,13 +18,10 @@ const update = (id, newObject) => {
 }
 
 const remove = (id) => {
-    axios.delete(`${baseUrl}/${id}`)
+    return axios.delete(`${baseUrl}/${id}`)
     .then(response => {
       console.log(`Deleted person with ID ${id}`);
     })
-    .catch(error => {
-      console.error(error);
-    });
 }
 
 

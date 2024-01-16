@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import countryService from "./services/countries";
+import weatherService from "./services/weather";
 import CountryForm from "./components/CountryForm";
 import Country from "./components/Country";
 import CountryList from "./components/CountryList";
@@ -9,7 +10,6 @@ const App = () => {
   const [searchString, setSearchString] = useState("");
 
   useEffect(() => {
-    console.log("useEffect running..");
     countryService
       .getAll()
       .then((data) => setCountries(data))
@@ -26,7 +26,6 @@ const App = () => {
       .filter((countryName) =>
         countryName.toLowerCase().includes(searchString)
       );
-    console.log(names);
     if (names.length > 10) {
       return <p>Too many matches, specify another filter</p>;
     } else if (names.length > 1) {

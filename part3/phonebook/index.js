@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+app.use(express.json());
 
 let persons = [
   {
@@ -60,6 +61,50 @@ app.delete("/api/persons/:id", (request, response) => {
   persons = persons.filter((p) => p.id !== id);
 
   response.status(204).end();
+});
+
+const generateRandomId = () => {
+  return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+};
+
+const isPhoneNumber = (input) => {
+  const phoneRegex = /^[0-9]+(-[0-9]+)*$/;
+  return phoneRegex.test(input);
+};
+
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+  if (typeof body.name !== "string" || typeof body.number !== "string") {
+    return response.status(400).json({
+      error: "Both name and number of the person need to be strings.",
+    });
+  }
+  if (!isPhoneNumber(body.number)) {
+    return response.status(400).json({
+      error: "Phone number not correctly formatted.",
+    });
+  }
+  if (persons.find((p) => p.name === body.name)) {
+    return response.status(400).json({
+      error: "Name must be unique.",
+    });
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateRandomId(),
+  };
+
+  persons = persons.concat(person);
+
+  response.json(person);
 });
 
 const PORT = 3001;

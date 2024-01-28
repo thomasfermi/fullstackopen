@@ -84,10 +84,6 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
-const generateRandomId = () => {
-  return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-};
-
 const isPhoneNumber = (input) => {
   const phoneRegex = /^[0-9]+(-[0-9]+)*$/;
   return phoneRegex.test(input);
@@ -98,7 +94,7 @@ app.post("/api/persons", (request, response) => {
 
   if (!body.name || !body.number) {
     return response.status(400).json({
-      error: "content missing",
+      error: "name or number missing",
     });
   }
   if (typeof body.name !== "string" || typeof body.number !== "string") {
@@ -111,21 +107,15 @@ app.post("/api/persons", (request, response) => {
       error: "Phone number not correctly formatted.",
     });
   }
-  if (persons.find((p) => p.name === body.name)) {
-    return response.status(400).json({
-      error: "Name must be unique.",
-    });
-  }
 
-  const person = {
+  const person = new PersonModel({
     name: body.name,
     number: body.number,
-    id: generateRandomId(),
-  };
+  });
 
-  persons = persons.concat(person);
-
-  response.json(person);
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
 });
 
 const PORT = process.env.PORT || 3001;

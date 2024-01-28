@@ -2,4 +2,8 @@ GET http://localhost:3001/api/persons
 
 ###
 
+GET http://localhost:3001/api/persons/65b0c023b20d8782b741dbff
+
+###
+
 GET https://fs-phonebook-backend-mt.fly.dev/api/persons

@@ -3,6 +3,9 @@ var morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 
+require("dotenv").config();
+const PersonModel = require("./models/person");
+
 app.use(express.static("dist"));
 app.use(express.json());
 app.use(cors());
@@ -62,17 +65,16 @@ app.get("/info", (request, response) => {
 });
 
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
+  PersonModel.find({}).then((persons) => {
+    response.json(persons);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((p) => p.id === id);
-  if (person) {
+  PersonModel.findById(request.params.id).then((person) => {
     response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  });
+  // TODO: error handling?
 });
 
 app.delete("/api/persons/:id", (request, response) => {

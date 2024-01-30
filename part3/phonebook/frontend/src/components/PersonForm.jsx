@@ -33,10 +33,8 @@ const PersonForm = ({ persons, setPersons, showNotification, showError }) => {
           setNewName("");
           showNotification(`Update number for ${oldPerson.name}`);
         })
-        .catch((_error) => {
-          showError(
-            `Information of ${oldPerson.name} has already been removed from server.`
-          );
+        .catch((error) => {
+          showError(error.response.data.error);
           return;
         });
     }
@@ -52,11 +50,14 @@ const PersonForm = ({ persons, setPersons, showNotification, showError }) => {
     } else if (!isPhoneNumber(newNumber)) {
       alert(`${newNumber} is not a valid phone number.`);
     } else {
-      personService.create(newPerson).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName("");
-        showNotification(`Added ${returnedPerson.name}`);
-      });
+      personService
+        .create(newPerson)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName("");
+          showNotification(`Added ${returnedPerson.name}`);
+        })
+        .catch((error) => showError(error.response.data.error));
     }
   };
 

@@ -24,44 +24,26 @@ app.use(
   })
 );
 
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: 3,
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
 app.get("/info", (request, response) => {
-  const line1 = `<p>Phonebook has info for ${persons.length} people.</p>`;
-  const options = {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    timeZoneName: "long",
-  };
-  const currentDate = new Date().toLocaleString("en-GB", options);
-  const line2 = `<p>${currentDate}</p>`;
-  const html_str = `<html>${line1}\n${line2}</html>`;
-  response.send(html_str);
+  PersonModel.find({})
+    .then((persons) => {
+      const line1 = `<p>Phonebook has info for ${persons.length} people.</p>`;
+      const options = {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZoneName: "long",
+      };
+      const currentDate = new Date().toLocaleString("en-GB", options);
+      const line2 = `<p>${currentDate}</p>`;
+      const html_str = `<html>${line1}\n${line2}</html>`;
+      response.send(html_str);
+    })
+    .catch((error) => next(error));
 });
 
 app.get("/api/persons", (request, response, next) => {
@@ -85,7 +67,6 @@ app.get("/api/persons/:id", (request, response, next) => {
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
-  console.log("deleting");
   PersonModel.deleteOne({ _id: request.params.id })
     .then((result) => {
       response.status(204).end();

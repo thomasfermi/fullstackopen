@@ -77,11 +77,13 @@ app.get("/api/persons/:id", (request, response) => {
   // TODO: error handling?
 });
 
-app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  persons = persons.filter((p) => p.id !== id);
-
-  response.status(204).end();
+app.delete("/api/persons/:id", (request, response, next) => {
+  console.log("deleting");
+  PersonModel.deleteOne({ _id: request.params.id })
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
 
 const isPhoneNumber = (input) => {

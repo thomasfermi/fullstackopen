@@ -1,11 +1,6 @@
 import { useState } from "react";
 import personService from "../services/persons";
 
-function isPhoneNumber(input) {
-  const phoneRegex = /^[0-9]+(-[0-9]+)*$/;
-  return phoneRegex.test(input);
-}
-
 const PersonForm = ({ persons, setPersons, showNotification, showError }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("0");
@@ -47,8 +42,6 @@ const PersonForm = ({ persons, setPersons, showNotification, showError }) => {
     }
     if (persons.some((person) => person.name === newName)) {
       maybeUpdatePerson();
-    } else if (!isPhoneNumber(newNumber)) {
-      alert(`${newNumber} is not a valid phone number.`);
     } else {
       personService
         .create(newPerson)

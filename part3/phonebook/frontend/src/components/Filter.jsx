@@ -1,14 +1,14 @@
 const Filter = ({ searchName, setSearchName }) => {
   const handleSearchNameChange = (event) => {
-    setSearchName(event.target.value);
-  };
+    setSearchName(event.target.value)
+  }
 
   return (
     <div>
-      Filter for name:{" "}
+      Filter for name:{' '}
       <input value={searchName} onChange={handleSearchNameChange} />
     </div>
-  );
-};
+  )
+}
 
-export default Filter;
+export default Filter

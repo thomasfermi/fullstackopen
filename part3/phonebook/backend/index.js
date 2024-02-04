@@ -24,7 +24,7 @@ app.use(
   })
 )
 
-app.get('/info', (request, response) => {
+app.get('/info', (request, response, next) => {
   PersonModel.find({})
     .then((persons) => {
       const line1 = `<p>Phonebook has info for ${persons.length} people.</p>`
@@ -68,7 +68,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   PersonModel.deleteOne({ _id: request.params.id })
-    .then((result) => {
+    .then(() => {
       response.status(204).end()
     })
     .catch((error) => next(error))

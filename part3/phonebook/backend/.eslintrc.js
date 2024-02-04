@@ -10,8 +10,8 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    indent: ['error', 2],
-    'linebreak-style': ['error', 'unix'],
+    indent: ['error', 2, { SwitchCase: 1 }],
+    'linebreak-style': 0,
     quotes: ['error', 'single'],
     semi: ['error', 'never'],
     eqeqeq: 'error',

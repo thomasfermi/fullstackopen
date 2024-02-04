@@ -26,21 +26,21 @@ const connectDbAndReturnPersonModel = () => {
 }
 
 const addPerson = () => {
-  PersonModel = connectDbAndReturnPersonModel()
+  const PersonModel = connectDbAndReturnPersonModel()
 
   const person = new PersonModel({
     name: process.argv[3],
     number: process.argv[4],
   })
 
-  person.save().then((result) => {
+  person.save().then(() => {
     console.log('person saved!')
     mongoose.connection.close()
   })
 }
 
 const showAllPersons = () => {
-  PersonModel = connectDbAndReturnPersonModel()
+  const PersonModel = connectDbAndReturnPersonModel()
 
   console.log('phonebook:')
   PersonModel.find({}).then((result) => {
@@ -52,12 +52,12 @@ const showAllPersons = () => {
 }
 
 switch (process.argv.length) {
-case 5:
-  addPerson()
-  break
-case 3:
-  showAllPersons()
-  break
-default:
-  showErrorOnConsoleAndClose()
+  case 5:
+    addPerson()
+    break
+  case 3:
+    showAllPersons()
+    break
+  default:
+    showErrorOnConsoleAndClose()
 }

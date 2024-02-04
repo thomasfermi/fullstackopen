@@ -10,7 +10,8 @@
     "build:ui": "rm -rf dist && cd ../frontend/ && npm run build && cp -r dist ../backend",
     "deploy": "flyctl deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "flyccd tl logs"
+    "logs:prod": "flyccd tl logs",
+    "lint": "eslint ."
   },
   "author": "Mario Theers",
   "license": "MIT",
@@ -23,6 +24,8 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-import": "^2.29.1",
     "nodemon": "^3.0.3"
   }
 }

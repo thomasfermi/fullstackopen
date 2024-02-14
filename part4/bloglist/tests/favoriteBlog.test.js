@@ -1,6 +1,6 @@
 const listHelper = require('../utils/list_helper')
 
-describe('totalLikes', () => {
+describe('favoriteBlog', () => {
   const listWithOneBlog = [
     {
       _id: '5a422aa71b54a676234d17f8',
@@ -49,7 +49,7 @@ describe('totalLikes', () => {
       title: 'TDD harms architecture',
       author: 'Robert C. Martin',
       url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-      likes: 0,
+      likes: 12,
       __v: 0,
     },
     {
@@ -62,18 +62,34 @@ describe('totalLikes', () => {
     },
   ]
 
-  test('of empty list is zero', () => {
-    const result = listHelper.totalLikes([])
-    expect(result).toBe(0)
+  test('of empty list is null', () => {
+    const result = listHelper.favoriteBlog([])
+    expect(result).toEqual(null)
   })
 
-  test('when list has only one blog, equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOneBlog)
-    expect(result).toBe(5)
+  test('when list has only one blog, returns that', () => {
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    const expected = {
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5,
+    }
+    expect(result).toEqual(expected)
   })
 
-  test('of a bigger list is calculated right', () => {
-    const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(36)
+  test('of a bigger list is found correctly', () => {
+    const result = JSON.stringify(listHelper.favoriteBlog(blogs))
+    console.log(result)
+    const possibility_one = JSON.stringify({
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      likes: 12,
+    })
+    const possibility_two = JSON.stringify({
+      title: 'TDD harms architecture',
+      author: 'Robert C. Martin',
+      likes: 12,
+    })
+    expect([possibility_one, possibility_two]).toContain(result)
   })
 })

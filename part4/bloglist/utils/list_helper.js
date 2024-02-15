@@ -75,9 +75,26 @@ const mostBlogs = (blogs) => {
   return { author: mostBlogsAuthor, blogs: authorCount[mostBlogsAuthor] }
 }
 
+const mostLikes = (blogs) => {
+  if (_.isEmpty(blogs)) {
+    return null
+  }
+
+  const uniqueAuthors = _.uniq(blogs.map((blog) => blog.author))
+  const authorsAndLikes = uniqueAuthors.map((author) => {
+    const receivedLikes = blogs
+      .filter((b) => b.author === author)
+      .map((b) => b.likes)
+    return { author: author, likes: _.sum(receivedLikes) }
+  })
+
+  return _.maxBy(authorsAndLikes, 'likes')
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }

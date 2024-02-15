@@ -27,8 +27,57 @@ const favoriteBlog = (blogs) => {
   }
 }
 
+/*
+const mostBlogsNaive = (blogs) => {
+  if (blogs.length === 0) {
+    return null
+  }
+
+  const authorMap = {}
+  const addToAuthourMap = (author) => {
+    if (author in authorMap) {
+      authorMap[author] += 1
+    } else {
+      authorMap[author] = 1
+    }
+  }
+  blogs.forEach((b) => {
+    addToAuthourMap(b.author)
+  })
+
+  console.log(authorMap)
+
+  let mostBlogs = 0
+  let mostBlogsAuthor = null
+  for (const [key, value] of Object.entries(authorMap)) {
+    if (value > mostBlogs) {
+      mostBlogs = value
+      mostBlogsAuthor = key
+    }
+  }
+  return { author: mostBlogsAuthor, blogs: mostBlogs }
+} */
+
+const _ = require('lodash')
+
+const mostBlogs = (blogs) => {
+  if (_.isEmpty(blogs)) {
+    return null
+  }
+
+  const authorCount = _.countBy(blogs, 'author')
+
+  const mostBlogsAuthor = _.maxBy(
+    _.keys(authorCount),
+    (author) => authorCount[author]
+  )
+
+  return { author: mostBlogsAuthor, blogs: authorCount[mostBlogsAuthor] }
+}
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }

@@ -71,9 +71,27 @@ test('omitting likes works', async () => {
   }
   await api.post('/api/blogs').send(newBlog)
 
-  // get blogs and check if we get one more
+  // assert
   const response = await api.get('/api/blogs')
   expect(response.body[2].likes).toEqual(0)
+}, 100000)
+
+test('omitting title does not work', async () => {
+  const newBlog = {
+    author: 'Mickey Mouse',
+    url: 'https://cheese.com/',
+    likes: 77,
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
+}, 100000)
+
+test('omitting url does not work', async () => {
+  const newBlog = {
+    title: 'Cheese is tasty',
+    author: 'Mickey Mouse',
+    likes: 77,
+  }
+  await api.post('/api/blogs').send(newBlog).expect(400)
 }, 100000)
 
 afterAll(async () => {

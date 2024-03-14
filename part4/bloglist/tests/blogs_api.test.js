@@ -62,6 +62,20 @@ test('adding a blog works', async () => {
   expect(response.body).toHaveLength(initialBlogs.length + 1)
 }, 100000)
 
+test('omitting likes works', async () => {
+  // add blog
+  const newBlog = {
+    title: 'Cheese is tasty',
+    author: 'Mickey Mouse',
+    url: 'https://cheese.com/',
+  }
+  await api.post('/api/blogs').send(newBlog)
+
+  // get blogs and check if we get one more
+  const response = await api.get('/api/blogs')
+  expect(response.body[2].likes).toEqual(0)
+}, 100000)
+
 afterAll(async () => {
   await mongoose.connection.close()
 }, 100000)

@@ -110,6 +110,11 @@ describe('deletion of a blog', () => {
 
     expect(blogTitles).not.toContain(blogToDelete.title)
   })
+
+  test('fails with status code 404 if id is invalid', async () => {
+    const invalidId = '123456789012345678901234' // An invalid ID that doesn't exist
+    await api.delete(`/api/blogs/${invalidId}`).expect(404)
+  })
 })
 
 describe('updating a blog', () => {
